@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Dropdown } from "./dropdown";
 import { Newscard } from "./newscard";
+import 'dotenv/config';
 import axios from "axios";
 
 const dropdownOptions = [
@@ -16,9 +17,9 @@ const dropdownOptions = [
 export function Landing() {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [searchResults, setSearchResults] = useState([]);
-  const [inputValue , setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
-  const handleSearch = async (query) => {
+  const handleSearch = async (query: any) => {
     try {
       const options = {
         method: "POST",
@@ -26,14 +27,13 @@ export function Landing() {
         headers: {
           accept: "application/json",
           "content-type": "application/json",
-          "x-api-key": "a50f5f9a-4f9c-42e0-baf9-bcc20c8914e0",
+          "x-api-key": process.env.API_KEY,
         },
-        body: JSON.stringify({ query }),
-    };
+        data: { query },
+      };
 
-    const response = await fetch("/api/search", options);
-    const data = await response.json();
-    setSearchResults(data.results);
+      const response = await axios.request(options);
+      setSearchResults(response.data.results);
     } catch (error) {
       console.error(error);
     }
@@ -147,7 +147,7 @@ export function Landing() {
   );
 }
 
-function AppWindowIcon(props) {
+function AppWindowIcon(props: any) {
   return (
     <svg
       {...props}
@@ -169,7 +169,7 @@ function AppWindowIcon(props) {
   );
 }
 
-function ChevronDownIcon(props) {
+function ChevronDownIcon(props: any) {
   return (
     <svg
       {...props}
